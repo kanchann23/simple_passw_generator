@@ -1,4 +1,4 @@
-name: publish_password
+name: publish_package
 
 on:
   push:
@@ -8,21 +8,27 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.8' 
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
 
-    - name: Build distribution files
-      run: python setup.py sdist bdist_wheel
+      - name: Install dependencies
+        run: |
+          pip install setuptools wheel twine
 
-    - name: publish_password
-      env:
-        TWINE_USERNAME: ${{secrets.USERNAME}}
-        TWINE_PASSWORD: ${{ secrets.PASSWORD}}
-      run: twine upload dist/*
+      - name: Build distribution
+        run: |
+          python setup.py sdist bdist_wheel
+
+      - name: publish_package
+        run: |
+          python -m twine upload --skip-existing dist/*
+
+        env:
+          TWINE_USERNAME: ${{ secrets.USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PASSWORD }}
