@@ -21,7 +21,7 @@ jobs:
     - name: Build distribution files
       run: python setup.py sdist bdist_wheel
 
-    - name: Publish to PyPI
+    - name: publish_password
       env:
         TWINE_USERNAME: ${{secrets.USERNAME}}
         TWINE_PASSWORD: ${{ secrets.PASSWORD}}
