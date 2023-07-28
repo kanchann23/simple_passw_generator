@@ -10,5 +10,6 @@ A simple Python script that generates random passwords of varying lengths (betwe
  
  3-Run the random_password_generator.py script:
  
-            `` python random_password_generator.py``
+            
+     python random_password_generator.py
 
