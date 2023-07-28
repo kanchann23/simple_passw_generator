@@ -1,0 +1,28 @@
+name: publish_password
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8' 
+
+    - name: Build distribution files
+      run: python setup.py sdist bdist_wheel
+
+    - name: Publish to PyPI
+      env:
+        TWINE_USERNAME: ${{secrets.USERNAME}}
+        TWINE_PASSWORD: ${{ secrets.PASSWORD}}
+      run: twine upload dist/*
