@@ -1,34 +1,44 @@
 name: publish_package
-'on':
+
+on:
   push:
     branches:
       - main
+
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: '3.8'
+
       - name: Install dependencies
         run: |
           pip install setuptools wheel twine
+
       - name: Prompt for version number
         run: |
           echo "Enter the version number (e.g., 1.2.3):"
           read version_number
           echo "You entered version: $version_number"
           echo "version_number=$version_number" >> $GITHUB_ENV
+
+        shell: bash
+
       - name: Build distribution
         run: |
           python setup.py sdist bdist_wheel
+
       - name: publish_package
-        run: >
-          python -m twine upload --skip-existing dist/* --repository pypi
-          --username ${{ secrets.USERNAME }} --password ${{ secrets.PASSWORD }}
+        run: |
+          python -m twine upload --skip-existing dist/* --repository pypi --username ${{ secrets.USERNAME }} --password ${{ secrets.PASSWORD }}
+
         env:
-          TWINE_USERNAME: '${{ secrets.USERNAME }}'
-          TWINE_PASSWORD: '${{ secrets.PASSWORD }}'
+          TWINE_USERNAME: ${{ secrets.USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PASSWORD }}
+
