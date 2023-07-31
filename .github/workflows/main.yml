@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch: # Allow manual triggering of the workflow
 
 jobs:
   publish:
@@ -22,12 +23,10 @@ jobs:
           pip install setuptools wheel twine
 
       - name: Prompt for version number
+        id: prompt_version
         run: |
           echo "Enter the version number (e.g., 1.2.3):"
-          read version_number
-          echo "You entered version: $version_number"
-          echo "version_number=$version_number" >> $GITHUB_ENV
-
+          echo "::set-output name=version_number::$(read)"
         shell: bash
 
       - name: Build distribution
@@ -41,4 +40,5 @@ jobs:
         env:
           TWINE_USERNAME: ${{ secrets.USERNAME }}
           TWINE_PASSWORD: ${{ secrets.PASSWORD }}
+
 
