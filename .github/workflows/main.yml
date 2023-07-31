@@ -26,6 +26,11 @@ jobs:
         run: |
           pip install setuptools wheel twine
 
+      - name: Prompt for version number
+        id: prompt_version
+        run: |
+          echo "VERSION_NUMBER=${{ github.event.inputs.version_number }}" >> $GITHUB_ENV
+
       - name: Build distribution
         run: |
           python setup.py sdist bdist_wheel
@@ -33,7 +38,7 @@ jobs:
       - name: publish_package
         run: |
           python -m twine upload --skip-existing dist/* --repository pypi --username ${{ secrets.USERNAME }} --password ${{ secrets.PASSWORD }}
-
         env:
           TWINE_USERNAME: ${{ secrets.USERNAME }}
           TWINE_PASSWORD: ${{ secrets.PASSWORD }}
+          VERSION_NUMBER: ${{ env.VERSION_NUMBER }}
