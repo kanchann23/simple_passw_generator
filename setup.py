@@ -1,9 +1,13 @@
 # setup.py
 from setuptools import setup, find_packages
 
+def get_version():
+    with open("VERSION.txt") as f:
+        return f.read().strip()
+
 setup(
     name='passw',
-    version='1.0.0.4',
+    version=get_version(),
     packages=find_packages(),
     author='kanchan',
    
