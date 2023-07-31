@@ -20,7 +20,7 @@ def generate_random_password(length):
 
 
 def gen_pass():
-    pass_len = random.randint(6,10)
+    pass_len = random.randint(6,11)
     passw = generate_random_password(pass_len)
     return passw
    
